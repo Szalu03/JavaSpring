@@ -106,6 +106,9 @@ public abstract class Vehicle {
     public void setUser(User user) {
         this.user = user;
     }
+    public String getUserLogin(){return user.getLogin();}
+    public User.Role getUserRole(){return user.getRole();}
+
 
     public String toCSV() {
         return new StringBuilder()

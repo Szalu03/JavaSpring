@@ -36,9 +36,17 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody CreateUserDto createUserDto) {
-        //todo: logika gdy nie uda sie dodac usera
-        userService.createUser(createUserDto);
-        return ResponseEntity.ok(("User created successfully"));
+
+        boolean succcess = userService.createUser(createUserDto);
+
+
+        if(succcess){
+            return ResponseEntity.ok(("User created successfully"));
+        }
+        else{
+            return ResponseEntity.badRequest().body("Failed");
+        }
+
     }
 
     @DeleteMapping("{login}")

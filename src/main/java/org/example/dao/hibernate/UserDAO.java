@@ -39,13 +39,14 @@ public class UserDAO implements IUserRepository {
     }
 
     @Override
-    public void addUser(User user) {
+    public boolean addUser(User user) {
             Session session = sessionFactory.openSession();
             Transaction transaction = null;
             try {
                 transaction = session.beginTransaction();
                 session.persist(user);
                 transaction.commit();
+                return true;
             } catch (RuntimeException e) {
                 if (transaction != null) {
                     transaction.rollback();
@@ -54,6 +55,7 @@ public class UserDAO implements IUserRepository {
             } finally {
                 session.close();
             }
+            return false;
     }
 
     @Override

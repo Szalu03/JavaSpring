@@ -8,13 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import org.example.dao.IUserRepository;
+import org.example.dao.IVehicleRepository;
+import org.example.model.User;
+import org.example.model.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
 @Service
 public class RentService {
-    //todo: Dodac wstrzykwianie autowired przez konstruktor.
 
     private IUserRepository userRepository;
-
     private IVehicleRepository vehicleRepository;
+    @Autowired
+    public RentService(IUserRepository userRepository, IVehicleRepository vehicleRepository) {
+        this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
+    }
 
     public boolean rentVehicle(String plate, String login) {
         User user = userRepository.getUser(login);
@@ -26,5 +37,15 @@ public class RentService {
         }
         return false;
     }
-    //todo: dodac zwracanie pojazdu
+
+    public boolean returnVehicle(String login,String plate) {
+        User user = userRepository.getUser(login);
+        Vehicle vehicle = user.getVehicle();
+
+        if (user != null && vehicle != null && !vehicle.isRent()) {
+            vehicleRepository.returnVehicle(plate, login);
+            return true;
+        }
+        return false;
+    }
 }
